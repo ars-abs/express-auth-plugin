@@ -1,7 +1,11 @@
 import resources from './resources';
+import setupAuthFlows from './setupAuthFlows';
 
-const setup = () => {
-	const routes = {};
+const setupRoutes = () => ({});
+
+const setup = (context) => {
+	setupAuthFlows(context);
+	const routes = setupRoutes();
 
 	return {
 		resources,
