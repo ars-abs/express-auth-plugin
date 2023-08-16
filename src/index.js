@@ -1,15 +1,8 @@
-import passport from 'passport';
 import resources from './resources';
 import setupAuthFlows from './setupAuthFlows';
 import saveLogin from './saveLogin';
 import enrichContext from './enrichContext';
-const authenticator = (req, ...args) => {
-	const { params: { provider }} = req;
-
-	return passport.authenticate(provider, {
-		session: false, accessType: 'offline', prompt: 'consent',
-	})(req, ...args);
-};
+import authenticator from './authenticator';
 
 const redirect = (req, res) => res.redirect('/');
 const setupRoutes = () => ({
