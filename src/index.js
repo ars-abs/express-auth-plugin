@@ -2,15 +2,15 @@ import resources from './resources';
 import setupAuthFlows from './setupAuthFlows';
 import saveLogin from './saveLogin';
 import enrichContext from './enrichContext';
-import authenticator from './authenticator';
+import authenticate from './authenticate';
 import logout from './logout';
 
 const redirect = (req, res) => res.redirect('/');
 const setupRoutes = ({ config: { auth: {
 	loginURL, logoutURL,	callbackURL, renewURL,
 }}}) => ({
-	[`GET ${ loginURL }/:provider`]: [authenticator],
-	[`GET ${ callbackURL }/:provider`]: [authenticator, saveLogin, redirect],
+	[`GET ${ loginURL }/:provider`]: [authenticate],
+	[`GET ${ callbackURL }/:provider`]: [authenticate, saveLogin, redirect],
 	[`GET ${ logoutURL }`]: [logout],
 });
 

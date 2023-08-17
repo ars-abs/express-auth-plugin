@@ -1,6 +1,6 @@
 import passport from 'passport';
 
-const authenticator = (req, ...args) => {
+const authenticate = (req, ...args) => {
 	const { params: { provider }} = req;
 
 	return passport.authenticate(provider, {
@@ -8,4 +8,4 @@ const authenticator = (req, ...args) => {
 	})(req, ...args);
 };
 
-export default authenticator;
+export default authenticate;
