@@ -1,6 +1,8 @@
-import { map } from '@laufire/utils/collection';
+import { merge } from '@laufire/utils/collection';
 
 const normalizeProviders = ({ config: { auth: { strategies, providers }}}) =>
-	map(providers, (provider, name) => ({ ...provider, ...strategies[name] }));
+	merge(
+		{}, providers, strategies
+	);
 
 export default normalizeProviders;
