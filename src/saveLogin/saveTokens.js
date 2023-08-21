@@ -1,3 +1,4 @@
+import { v4 as getUUID } from 'uuid';
 
 const saveTokens = async ({
 	models: { users },
@@ -6,6 +7,7 @@ const saveTokens = async ({
 	await users.findOrCreate({
 		where: { user: sub },
 		defaults: {
+			id: getUUID(),
 			user: sub,
 			iss: issuer,
 			refreshToken: refreshToken,
