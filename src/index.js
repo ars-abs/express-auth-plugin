@@ -3,8 +3,9 @@ import setupAuthFlows from './setupAuthFlows';
 import enrichContext from './enrichContext';
 import setupRoutes from './setupRoutes';
 import buildVerifier from './buildVerifier';
+import { self } from '@laufire/utils/fn';
 
-const setup = (context) => {
+const init = (context) => {
 	const enrichedContext = enrichContext(context);
 
 	setupAuthFlows(enrichedContext);
@@ -19,4 +20,6 @@ const setup = (context) => {
 	};
 };
 
-export { setup };
+const setup = self;
+
+export { init, setup };
