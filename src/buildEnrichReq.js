@@ -1,6 +1,6 @@
 import { merge } from '@laufire/utils/collection';
 
-const enrichReq = (context) => (
+const buildEnrichReq = (context) => (
 	req, res, next
 ) => {
 	req.context = merge(
@@ -9,4 +9,4 @@ const enrichReq = (context) => (
 	next();
 };
 
-export default enrichReq;
+export default buildEnrichReq;
