@@ -1,8 +1,9 @@
 import saveLogin from './saveLogin';
 import authenticate from './authenticate';
 import logout from './logout';
-import renewTokens from './renewTokens';
 import buildEnrichReq from './buildEnrichReq';
+import verifyRefreshToken from './verifyRefreshToken';
+import renewToken from './renewToken';
 
 const redirect = (req, res) => res.redirect('/');
 const home = (req, res) => res.send('home');
@@ -13,6 +14,7 @@ const setupRoutes = (context) => {
 		loginURL, logoutURL,	callbackURL, renewURL,
 	}}} = context;
 	const enrichReq = buildEnrichReq(context);
+	const validateRefreshToken = verifyRefreshToken(context);
 
 	return {
 		'GET /': home,
@@ -20,7 +22,7 @@ const setupRoutes = (context) => {
 		[`GET ${ loginURL }/:provider`]: [enrichReq, authenticate],
 		[`GET ${ callbackURL }/:provider`]: [enrichReq, authenticate, saveLogin, redirect],
 		[`GET ${ logoutURL }`]: [enrichReq, logout],
-		[`GET ${ renewURL }`]: [enrichReq, renewTokens, saveLogin, redirect],
+		[`GET ${ renewURL }`]: [enrichReq, validateRefreshToken, renewToken],
 	};
 };
 
