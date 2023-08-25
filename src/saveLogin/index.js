@@ -1,10 +1,12 @@
+/* eslint-disable max-lines-per-function */
 import { findIndex } from '@laufire/utils/collection';
-import saveTokens from './saveTokens';
 import jwt from 'jsonwebtoken';
 
-const saveLogin = async (req, res, next) => {
-	const { user: { idToken, ...restTokens }, context } = req;
-	const { config: { auth: { providers }}} = context;
+const saveLogin = (
+	req, res, next
+) => {
+	const { user: { idToken }, context } = req;
+	const { config: { auth: { providers, renewURL }}} = context;
 	const { sub, iss } = jwt.decode(idToken);
 
 	const issuer = findIndex(providers,
@@ -14,12 +16,22 @@ const saveLogin = async (req, res, next) => {
 			sub: sub,
 			iss: issuer,
 			role: 'user',
+		}, process.env.JWTSECRET, { expiresIn: '15m' }
+	);
+	const refreshToken = jwt.sign(
+		{
+			sub: sub,
+			iss: issuer,
 		}, process.env.JWTSECRET, { expiresIn: '1h' }
 	);
 
-	await saveTokens({ ...context, data: { ...restTokens, sub, issuer }});
 	res.cookie(
 		'token', token, { httpOnly: true, secure: true }
+	);
+	res.cookie(
+		'refToken', refreshToken, {
+			httpOnly: true, secure: true, path: renewURL,
+		}
 	);
 	next();
 };
