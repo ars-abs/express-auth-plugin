@@ -2,8 +2,8 @@ import resources from './resources';
 import setupAuthFlows from './setupAuthFlows';
 import enrichContext from './enrichContext';
 import setupRoutes from './setupRoutes';
-import buildVerifier from './buildVerifier';
 import { self } from '@laufire/utils/fn';
+import verifyAccess from './verifyAccess';
 
 const init = (context) => {
 	const enrichedContext = enrichContext(context);
@@ -11,12 +11,11 @@ const init = (context) => {
 	setupAuthFlows(enrichedContext);
 
 	const routes = setupRoutes(enrichedContext);
-	const validateLogin = buildVerifier(enrichedContext);
 
 	return {
 		resources,
 		routes,
-		validateLogin,
+		verifyAccess,
 	};
 };
 
