@@ -3,7 +3,7 @@ import setupAuthFlows from './setupAuthFlows';
 import enrichContext from './enrichContext';
 import setupRoutes from './setupRoutes';
 import { self } from '@laufire/utils/fn';
-import verifyAccess from './verifyAccess';
+import authenticate from './verifyAccess';
 
 const init = (context) => {
 	const enrichedContext = enrichContext(context);
@@ -15,7 +15,7 @@ const init = (context) => {
 	return {
 		resources,
 		routes,
-		verifyAccess,
+		authenticate,
 	};
 };
 

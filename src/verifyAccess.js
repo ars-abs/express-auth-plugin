@@ -1,22 +1,19 @@
 import jwt from 'jsonwebtoken';
 
-const verifyAccess = (
-	req, res, next
-) => {
-	const { token } = req.cookies;
-	const secretKey = process.env.JWTSECRET;
-
+const authenticate = ({ data: { token }}) => {
 	try {
+		const secretKey = process.env.JWTSECRET;
 		const user = jwt.verify(token, secretKey);
 
-		req.user = user;
-		next();
+		return { user };
 	}
 	catch (error) {
-		error.name === 'TokenExpiredError'
-			? res.json({ error: { message: 'JWT has expired' }})
-			: res.json({ error: { message: 'JWT verification failed' }});
+		return { error: {
+			data: error,
+			code: 401,
+			message: error.name,
+		}};
 	}
 };
 
-export default verifyAccess;
+export default authenticate;
