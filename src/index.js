@@ -13,7 +13,9 @@ const init = (context) => {
 	setupAuthFlows(enrichedContext);
 
 	const routes = setupRoutes(enrichedContext);
-	const middlewares = [allowCredentials, readSession];
+
+	// NOTE: Temp fix for merge all other plugin middlewares
+	const middlewares = { auth: [allowCredentials, readSession] };
 
 	return {
 		resources,
