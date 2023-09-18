@@ -3,12 +3,9 @@ import authenticate from './authenticate';
 import logout from './logout';
 import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
-import verifyAccess from './verifyAccess';
 import jwt from 'jsonwebtoken';
 
 const redirect = (req, res) => res.redirect('http://localhost:6006/');
-const home = (req, res) => res.send('home');
-const login = (req, res) => res.send('please choose provider');
 const getSession = (req, res) => {
 	try {
 		const { exp } = jwt.decode(req.cookies.token);
@@ -42,8 +39,6 @@ const setupRoutes = (context) => {
 	const enrichReq = buildEnrichReq(context);
 
 	return {
-		'GET /': [verifyAccess, home],
-		[`GET ${ loginURL }`]: login,
 		[`GET ${ loginURL }/:provider`]: [enrichReq, allowCredentials, authenticate],
 		[`GET ${ callbackURL }/:provider`]: [enrichReq, allowCredentials, authenticate, saveLogin, redirect],
 		[`GET ${ logoutURL }`]: [enrichReq, logout],

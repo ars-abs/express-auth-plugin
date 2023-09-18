@@ -6,7 +6,10 @@ const saveLogin = (
 	req, res, next
 ) => {
 	const { user: { idToken }, context } = req;
-	const { config: { auth: { providers, renewURL }}} = context;
+	const { config: {
+		auth: { providers, renewURL },
+		env: { JWTSECRET },
+	}} = context;
 	const { sub, iss } = jwt.decode(idToken);
 
 	const issuer = findIndex(providers,
@@ -16,13 +19,15 @@ const saveLogin = (
 			sub: sub,
 			iss: issuer,
 			role: 'user',
-		}, process.env.JWTSECRET, { expiresIn: '15m' }
+		},
+		JWTSECRET,
+		{ expiresIn: '15m' }
 	);
 	const refreshToken = jwt.sign(
 		{
 			sub: sub,
 			iss: issuer,
-		}, process.env.JWTSECRET, { expiresIn: '1h' }
+		}, JWTSECRET, { expiresIn: '1h' }
 	);
 
 	res.cookie(

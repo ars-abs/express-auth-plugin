@@ -4,17 +4,19 @@ import { findIndex } from '@laufire/utils/collection';
 import jwt from 'jsonwebtoken';
 
 const renewAccessToken = (req, res) => {
-	const { context: { config: { auth: { providers }}}} = req;
-	const secretKey = process.env.JWTSECRET;
+	const { context: { config: {
+		auth: { providers },
+		env: { JWTSECRET },
+	}}} = req;
 
 	try {
 		const token = req.cookies.refToken;
-		const { sub, iss, role } = jwt.verify(token, secretKey);
+		const { sub, iss, role } = jwt.verify(token, JWTSECRET);
 		const issuer = findIndex(providers,
 			({ issuer: provider }) => provider === iss);
 		const accessToken = jwt.sign(
 			{ sub: sub, iss: issuer, role: role },
-			process.env.JWTSECRET,
+			JWTSECRET,
 			{ expiresIn: '15m' }
 		);
 		const statusCode = 200;
