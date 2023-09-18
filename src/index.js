@@ -6,6 +6,7 @@ import { self } from '@laufire/utils/fn';
 import authenticate from './verifyAccess';
 import readSession from './middlewares/readSession';
 import allowCredentials from './middlewares/allowCredentials';
+import { map } from '@laufire/utils/collection';
 
 const init = (context) => {
 	const enrichedContext = enrichContext(context);
@@ -13,14 +14,13 @@ const init = (context) => {
 	setupAuthFlows(enrichedContext);
 
 	const routes = setupRoutes(enrichedContext);
-
-	// NOTE: Temp fix for merge all other plugin middlewares
-	const middlewares = { auth: [allowCredentials, readSession] };
+	const middleware = (...args) =>
+		map([allowCredentials, readSession], (fn) => fn(...args));
 
 	return {
 		resources,
 		routes,
-		middlewares,
+		middleware,
 		authenticate,
 	};
 };
