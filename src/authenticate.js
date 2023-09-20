@@ -1,10 +1,13 @@
 import passport from 'passport';
 
 const authenticate = (req, ...args) => {
-	const { params: { provider }} = req;
+	const { params: { provider }, query: { state }} = req;
 
 	return passport.authenticate(provider, {
-		session: false, accessType: 'offline', prompt: 'consent',
+		session: false,
+		accessType: 'offline',
+		prompt: 'consent',
+		state: state,
 	})(req, ...args);
 };
 
