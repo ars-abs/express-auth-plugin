@@ -1,13 +1,15 @@
 import passport from 'passport';
+import { store } from './inMemoryStore';
 
 const authenticate = (req, ...args) => {
 	const { params: { provider }, query: { state }} = req;
+	const id = store(state);
 
 	return passport.authenticate(provider, {
 		session: false,
 		accessType: 'offline',
 		prompt: 'consent',
-		state: state,
+		state: id,
 	})(req, ...args);
 };
 

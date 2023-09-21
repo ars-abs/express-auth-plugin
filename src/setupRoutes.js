@@ -4,8 +4,8 @@ import logout from './logout';
 import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
 import jwt from 'jsonwebtoken';
+import redirect from './redirect';
 
-const redirect = (req, res) => res.redirect('http://localhost:6006/');
 const getSession = (req, res) => {
 	try {
 		const { exp } = jwt.decode(req.cookies.token);
