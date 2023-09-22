@@ -5,6 +5,7 @@ import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
 import jwt from 'jsonwebtoken';
 import redirect from './redirect';
+import allowCredentials from './middlewares/allowCredentials';
 
 const getSession = (req, res) => {
 	try {
@@ -29,10 +30,10 @@ const setupRoutes = (context) => {
 	const enrichReq = buildEnrichReq(context);
 
 	return {
-		[`GET ${ loginURL }/:provider`]: [enrichReq, delicateToPassport],
-		[`GET ${ callbackURL }/:provider`]: [enrichReq, delicateToPassport, saveLogin, redirect],
-		[`GET ${ logoutURL }`]: [enrichReq, logout],
-		[`GET ${ renewURL }`]: [enrichReq, renewAccessToken],
+		[`GET ${ loginURL }/:provider`]: [enrichReq, allowCredentials, delicateToPassport],
+		[`GET ${ callbackURL }/:provider`]: [enrichReq, allowCredentials, delicateToPassport, saveLogin, redirect],
+		[`GET ${ logoutURL }`]: [enrichReq, allowCredentials, logout],
+		[`GET ${ renewURL }`]: [enrichReq, allowCredentials, renewAccessToken],
 		[`GET ${ session }`]: [getSession],
 	};
 };
