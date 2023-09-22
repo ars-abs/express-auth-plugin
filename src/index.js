@@ -3,7 +3,7 @@ import setupAuthFlows from './setupAuthFlows';
 import enrichContext from './enrichContext';
 import setupRoutes from './setupRoutes';
 import { self } from '@laufire/utils/fn';
-import authenticate from './verifyAccess';
+import authenticate from './authenticate';
 import readSession from './middlewares/readSession';
 
 const init = (context) => {
