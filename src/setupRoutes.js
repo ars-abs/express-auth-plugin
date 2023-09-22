@@ -1,5 +1,5 @@
 import saveLogin from './saveLogin';
-import authenticate from './authenticate';
+import delicateToPassport from './delicateToPassport';
 import logout from './logout';
 import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
@@ -29,8 +29,8 @@ const setupRoutes = (context) => {
 	const enrichReq = buildEnrichReq(context);
 
 	return {
-		[`GET ${ loginURL }/:provider`]: [enrichReq, authenticate],
-		[`GET ${ callbackURL }/:provider`]: [enrichReq, authenticate, saveLogin, redirect],
+		[`GET ${ loginURL }/:provider`]: [enrichReq, delicateToPassport],
+		[`GET ${ callbackURL }/:provider`]: [enrichReq, delicateToPassport, saveLogin, redirect],
 		[`GET ${ logoutURL }`]: [enrichReq, logout],
 		[`GET ${ renewURL }`]: [enrichReq, renewAccessToken],
 		[`GET ${ session }`]: [getSession],

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { store } from './inMemoryStore';
 
-const authenticate = (req, ...args) => {
+const delicateToPassport = (req, ...args) => {
 	const { params: { provider }, query: { state }} = req;
 	const id = store(state);
 
@@ -13,4 +13,4 @@ const authenticate = (req, ...args) => {
 	})(req, ...args);
 };
 
-export default authenticate;
+export default delicateToPassport;
