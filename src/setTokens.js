@@ -2,7 +2,7 @@
 import { findIndex } from '@laufire/utils/collection';
 import jwt from 'jsonwebtoken';
 
-const saveLogin = (
+const setTokens = (
 	req, res, next
 ) => {
 	const { user: { idToken }, context } = req;
@@ -41,4 +41,4 @@ const saveLogin = (
 	next();
 };
 
-export default saveLogin;
+export default setTokens;
