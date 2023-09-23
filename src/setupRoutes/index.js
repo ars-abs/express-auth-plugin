@@ -5,7 +5,7 @@ import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
 import jwt from 'jsonwebtoken';
 import redirect from './redirect';
-import allowCredentials from './middlewares/allowCredentials';
+import allowCredentials from '../middlewares/allowCredentials';
 
 const getSession = (req, res) => {
 	try {

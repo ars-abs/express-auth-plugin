@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { store } from './inMemoryStore';
+import { store } from '../inMemoryStore';
 
 const delicateToPassport = (req, ...args) => {
 	const { params: { provider }, query: { state }} = req;
