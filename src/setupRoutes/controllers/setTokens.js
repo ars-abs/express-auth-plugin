@@ -5,29 +5,21 @@ import jwt from 'jsonwebtoken';
 const setTokens = (
 	req, res, next
 ) => {
-	const { user: { idToken }, context } = req;
-	const { config: {
-		auth: { providers, renewURL },
-		env: { JWTSECRET },
-	}} = context;
-	const { sub, iss } = jwt.decode(idToken);
-
-	const issuer = findIndex(providers,
-		({ issuer: provider }) => provider === iss);
+	const {
+		user: { idToken },
+		context: { config: {
+			auth: { providers, renewURL, accessTokenExp, refreshTokenExp },
+			env: { JWTSECRET: secret },
+		}},
+	} = req;
+	const { sub, iss: provider } = jwt.decode(idToken);
+	const iss = findIndex(providers, ({ issuer }) => issuer === provider);
+	const role = 'prospect';
 	const token = jwt.sign(
-		{
-			sub: sub,
-			iss: issuer,
-			role: 'prospect',
-		},
-		JWTSECRET,
-		{ expiresIn: '15m' }
+		{ sub, iss, role }, secret, { expiresIn: accessTokenExp }
 	);
 	const refreshToken = jwt.sign(
-		{
-			sub: sub,
-			iss: issuer,
-		}, JWTSECRET, { expiresIn: '1h' }
+		{ sub, iss }, secret, { expiresIn: refreshTokenExp }
 	);
 
 	res.cookie(

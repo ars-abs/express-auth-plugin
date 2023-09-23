@@ -1,38 +1,29 @@
-/* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import { findIndex } from '@laufire/utils/collection';
 import jwt from 'jsonwebtoken';
 
 const renewAccessToken = (req, res) => {
-	const { context: { config: {
-		auth: { providers },
-		env: { JWTSECRET },
-	}}} = req;
+	const { context: {
+		config: { env: { JWTSECRET: secret }, auth: { accessTokenExp }},
+		constants: { statusCodes },
+	}} = req;
 
 	try {
-		const token = req.cookies.refToken;
-		const { sub, iss, role } = jwt.verify(token, JWTSECRET);
-		const issuer = findIndex(providers,
-			({ issuer: provider }) => provider === iss);
+		const { token, refToken } = req.cookies;
+
+		jwt.verify(refToken, secret);
+		// eslint-disable-next-line no-unused-vars
+		const { exp, iat, ...data } = jwt.decode(token);
 		const accessToken = jwt.sign(
-			{ sub: sub, iss: issuer, role: role },
-			JWTSECRET,
-			{ expiresIn: '15m' }
+			data, secret, { expiresIn: accessTokenExp }
 		);
-		const statusCode = 200;
 
 		res.cookie(
-			'token', accessToken, { httpOnly: true, domain: 'localhost' }
+			'token', accessToken, { httpOnly: true, secure: true }
 		);
-		res.status(statusCode).json({ statusCode });
+		res.status(statusCodes.success).json({ message: 'success' });
 	}
 	catch (error) {
-		const statusCode = 401;
-
-		res.status(statusCode).json({ statusCode });
-	// 	error.name === 'TokenExpiredError'
-	// 		? res.json({ error: { message: 'JWT has expired' }})
-	// 		: res.json({ error: { message: 'JWT verification failed' }});
+		res.status(statusCodes.unauthorized).json({ message: error.message });
 	}
 };
 
