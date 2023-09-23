@@ -18,7 +18,7 @@ const setTokens = (
 		{
 			sub: sub,
 			iss: issuer,
-			role: 'user',
+			role: 'prospect',
 		},
 		JWTSECRET,
 		{ expiresIn: '15m' }

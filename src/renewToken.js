@@ -14,7 +14,7 @@ const renewToken = (req, res) => {
 		{
 			sub: sub,
 			iss: issuer,
-			role: 'user',
+			role: 'prospect',
 		}, process.env.JWTSECRET, { expiresIn: '15m' }
 	);
 
