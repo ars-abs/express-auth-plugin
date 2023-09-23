@@ -4,7 +4,6 @@ import logout from './logout';
 import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
 import redirect from './redirect';
-import allowCredentials from '../middlewares/allowCredentials';
 import getSession from './getSession';
 
 const setupRoutes = (context) => {
@@ -14,10 +13,10 @@ const setupRoutes = (context) => {
 	const enrichReq = buildEnrichReq(context);
 
 	return { routes: {
-		[`GET ${ loginURL }/:provider`]: [enrichReq, allowCredentials, delicateToPassport],
-		[`GET ${ callbackURL }/:provider`]: [enrichReq, allowCredentials, delicateToPassport, setTokens, redirect],
-		[`GET ${ logoutURL }`]: [enrichReq, allowCredentials, logout],
-		[`GET ${ renewURL }`]: [enrichReq, allowCredentials, renewAccessToken],
+		[`GET ${ loginURL }/:provider`]: [enrichReq, delicateToPassport],
+		[`GET ${ callbackURL }/:provider`]: [enrichReq, delicateToPassport, setTokens, redirect],
+		[`GET ${ logoutURL }`]: [enrichReq, logout],
+		[`GET ${ renewURL }`]: [enrichReq, renewAccessToken],
 		[`GET ${ session }`]: [getSession],
 	}};
 };
