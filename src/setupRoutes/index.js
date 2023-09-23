@@ -1,10 +1,10 @@
-import setTokens from './setTokens';
-import delicateToPassport from './delicateToPassport';
-import logout from './logout';
+import setTokens from './controllers/setTokens';
+import delicateToPassport from './controllers/delicateToPassport';
+import logout from './controllers/logout';
 import buildEnrichReq from './buildEnrichReq';
-import renewAccessToken from './renewAccessToken';
-import redirect from './redirect';
-import getSession from './getSession';
+import renewAccessToken from './controllers/renewAccessToken';
+import redirect from './controllers/redirect';
+import getSession from './controllers/getSession';
 
 const setupRoutes = (context) => {
 	const { config: { auth: {

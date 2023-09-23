@@ -1,4 +1,4 @@
-import { storage } from '../inMemoryStore';
+import { storage } from '../../inMemoryStore';
 
 const redirect = (req, res) => {
 	const origin = `${ req.protocol }://${ req.get('host') }`;
