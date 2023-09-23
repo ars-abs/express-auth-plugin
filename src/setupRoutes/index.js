@@ -13,13 +13,13 @@ const setupRoutes = (context) => {
 	}}} = context;
 	const enrichReq = buildEnrichReq(context);
 
-	return {
+	return { routes: {
 		[`GET ${ loginURL }/:provider`]: [enrichReq, allowCredentials, delicateToPassport],
 		[`GET ${ callbackURL }/:provider`]: [enrichReq, allowCredentials, delicateToPassport, setTokens, redirect],
 		[`GET ${ logoutURL }`]: [enrichReq, allowCredentials, logout],
 		[`GET ${ renewURL }`]: [enrichReq, allowCredentials, renewAccessToken],
 		[`GET ${ session }`]: [getSession],
-	};
+	}};
 };
 
 export default setupRoutes;

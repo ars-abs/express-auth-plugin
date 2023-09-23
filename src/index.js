@@ -4,21 +4,18 @@ import setupRoutes from './setupRoutes';
 import { self } from '@laufire/utils/fn';
 import authenticate from './authenticate';
 import readSession from './middlewares/readSession';
+import { pipe } from './helpers';
 
-const init = (context) => {
-	const enrichedContext = enrichContext(context);
+const setupMiddleware = () => ({ middleware: readSession });
+const includeAuthenticate = () => ({ authenticate });
 
-	setupAuthFlows(enrichedContext);
-
-	const routes = setupRoutes(enrichedContext);
-	const middleware = readSession;
-
-	return {
-		routes,
-		middleware,
-		authenticate,
-	};
-};
+const init = (context) => pipe([
+	enrichContext,
+	setupAuthFlows,
+	setupRoutes,
+	setupMiddleware,
+	includeAuthenticate,
+], context);
 
 const setup = self;
 
