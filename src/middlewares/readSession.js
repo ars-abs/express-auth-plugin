@@ -16,8 +16,9 @@ const readSession = (
 
 		session = { ...rest, expiresAt };
 	}
-	// eslint-disable-next-line no-empty
-	catch (error) {}
+	catch (error) {
+		session = { ...session, error };
+	}
 
 	req.context.session = session;
 	next();
