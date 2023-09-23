@@ -3,25 +3,9 @@ import delicateToPassport from './delicateToPassport';
 import logout from './logout';
 import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './renewAccessToken';
-import jwt from 'jsonwebtoken';
 import redirect from './redirect';
 import allowCredentials from '../middlewares/allowCredentials';
-
-const getSession = (req, res) => {
-	try {
-		const { exp } = jwt.decode(req.cookies.token);
-		const statusCode = 200;
-		const secondsOffset = 1000;
-		const expiresAt = new Date(exp * secondsOffset);
-
-		res.status(statusCode).json({ statusCode, expiresAt });
-	}
-	catch (error) {
-		const statusCode = 401;
-
-		res.status(statusCode).json({ statusCode });
-	}
-};
+import getSession from './getSession';
 
 const setupRoutes = (context) => {
 	const { config: { auth: {
