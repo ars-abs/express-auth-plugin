@@ -1,4 +1,3 @@
-import resources from './resources';
 import setupAuthFlows from './setupAuthFlows';
 import enrichContext from './enrichContext';
 import setupRoutes from './setupRoutes';
@@ -15,7 +14,6 @@ const init = (context) => {
 	const middleware = readSession;
 
 	return {
-		resources,
 		routes,
 		middleware,
 		authenticate,
