@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 const renewAccessToken = (req, res) => {
 	const { context: {
 		config: { env: { JWTSECRET: secret }, auth: { accessTokenExp }},
-		constants: { statusCodes },
+		constants: { statusCodes: { success, unauthorized }},
 	}} = req;
 
 	try {
@@ -20,10 +20,10 @@ const renewAccessToken = (req, res) => {
 		res.cookie(
 			'token', accessToken, { httpOnly: true, secure: true }
 		);
-		res.status(statusCodes.success).json({ message: 'success' });
+		res.status(success).json({ message: 'success' });
 	}
 	catch (error) {
-		res.status(statusCodes.unauthorized).json({ message: error.message });
+		res.status(unauthorized).json({ error: { message: 'unauthorized' }});
 	}
 };
 
