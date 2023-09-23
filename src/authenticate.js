@@ -1,9 +1,8 @@
-import { equals } from '@laufire/utils/collection';
 
-const authenticate = ({ session, next }) => (equals(session, {})
+const authenticate = ({ session, next }) => (session.role === 'guest'
 	? {
 		meta: { status: 'unauthorized' },
-		error: { message: 'Invalid session.' },
+		error: { message: 'Unauthorized access.' },
 	}
 	: next());
 

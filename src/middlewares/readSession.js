@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import jwt from 'jsonwebtoken';
 
 const secondsOffset = 1000;
@@ -6,7 +7,7 @@ const readSession = (
 	req, res, next
 ) => {
 	const { config: { env: { JWTSECRET }}} = req.context;
-	let session = {};
+	let session = { role: 'guest' };
 
 	try {
 		const { token } = req.cookies;
