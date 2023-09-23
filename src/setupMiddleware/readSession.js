@@ -3,9 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const secondsOffset = 1000;
 
-const readSession = (
-	req, res, next
-) => {
+const readSession = (req) => {
 	const { config: { env: { JWTSECRET }}} = req.context;
 	let session = { role: 'guest' };
 
@@ -21,7 +19,6 @@ const readSession = (
 	}
 
 	req.context.session = session;
-	next();
 };
 
 export default readSession;

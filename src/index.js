@@ -3,10 +3,8 @@ import enrichContext from './enrichContext';
 import setupRoutes from './setupRoutes';
 import { self } from '@laufire/utils/fn';
 import includeAuthenticate from './includeAuthenticate';
-import readSession from './middlewares/readSession';
 import { pipe } from './helpers';
-
-const setupMiddleware = () => ({ middleware: readSession });
+import setupMiddleware from './setupMiddleware';
 
 const init = (context) => pipe([
 	enrichContext,
