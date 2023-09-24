@@ -16,7 +16,7 @@ const readSession = (req) => {
 	try {
 		const { token } = req.cookies;
 		const { exp, role } = jwt.verify(token, JWTSECRET);
-		const expiresAt = new Date(exp * secondsOffset);
+		const expiresAt = exp * secondsOffset;
 		const tokenState = 'valid';
 
 		session = { role, expiresAt, tokenState };
