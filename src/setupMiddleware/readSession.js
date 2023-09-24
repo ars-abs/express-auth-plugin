@@ -1,7 +1,13 @@
 /* eslint-disable max-statements */
+import { findIndex } from '@laufire/utils/collection';
 import jwt from 'jsonwebtoken';
 
 const secondsOffset = 1000;
+const tokenStates = {
+	missing: ({ message }) => message === 'jwt must be provided',
+	expired: ({ message }) => message === 'jwt expired',
+	invalid: () => true,
+};
 
 const readSession = (req) => {
 	const { config: { env: { JWTSECRET }}} = req.context;
@@ -9,13 +15,16 @@ const readSession = (req) => {
 
 	try {
 		const { token } = req.cookies;
-		const { exp, ...rest } = jwt.verify(token, JWTSECRET);
+		const { exp, role } = jwt.verify(token, JWTSECRET);
 		const expiresAt = new Date(exp * secondsOffset);
+		const tokenState = 'valid';
 
-		session = { ...rest, expiresAt };
+		session = { role, expiresAt, tokenState };
 	}
 	catch (error) {
-		session = { ...session, error };
+		const tokenState = findIndex(tokenStates, (fn) => fn(error));
+
+		session = { ...session, tokenState };
 	}
 
 	req.context.session = session;

@@ -1,5 +1,12 @@
 /* eslint-disable max-lines-per-function */
+import { findIndex } from '@laufire/utils/collection';
 import jwt from 'jsonwebtoken';
+
+const tokenStates = {
+	missing: ({ message }) => message === 'jwt must be provided',
+	expired: ({ message }) => message === 'jwt expired',
+	invalid: () => true,
+};
 
 const renewAccessToken = (req, res) => {
 	const { context: {
@@ -23,7 +30,9 @@ const renewAccessToken = (req, res) => {
 		res.status(success).json({ message: 'success' });
 	}
 	catch (error) {
-		res.status(unauthorized).json({ error: { message: 'unauthorized' }});
+		const tokenState = findIndex(tokenStates, (fn) => fn(error));
+
+		res.status(unauthorized).json({ tokenState });
 	}
 };
 
