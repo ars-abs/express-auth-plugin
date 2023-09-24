@@ -5,6 +5,7 @@ import { self } from '@laufire/utils/fn';
 import includeAuthenticate from './includeAuthenticate';
 import { pipe } from './helpers';
 import setupMiddleware from './setupMiddleware';
+import setupResources from './setupResources';
 
 const init = (context) => pipe([
 	enrichContext,
@@ -12,6 +13,7 @@ const init = (context) => pipe([
 	setupRoutes,
 	setupMiddleware,
 	includeAuthenticate,
+	setupResources,
 ], context);
 
 const setup = self;
