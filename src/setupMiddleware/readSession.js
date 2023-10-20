@@ -15,11 +15,13 @@ const readSession = (req) => {
 
 	try {
 		const { token } = req.cookies;
-		const { exp, role } = jwt.verify(token, JWTSECRET);
+		const {
+			iss: provider, sub: providerID, exp, role,
+		} = jwt.verify(token, JWTSECRET);
 		const expiresAt = exp * secondsOffset;
 		const tokenState = 'valid';
 
-		session = { role, expiresAt, tokenState };
+		session = { role, expiresAt, tokenState, provider, providerID };
 	}
 	catch (error) {
 		const tokenState = findIndex(tokenStates, (fn) => fn(error));
