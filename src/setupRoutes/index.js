@@ -5,10 +5,11 @@ import buildEnrichReq from './buildEnrichReq';
 import renewAccessToken from './controllers/renewAccessToken';
 import redirect from './controllers/redirect';
 import getSession from './controllers/getSession';
+import registerUser from './controllers/registerUser';
 
 const setupRoutes = (context) => {
 	const { config: { auth: {
-		loginURL, logoutURL,	callbackURL, renewURL, session,
+		loginURL, logoutURL,	callbackURL, renewURL, session, registerURL,
 	}}} = context;
 	const enrichReq = buildEnrichReq(context);
 
@@ -18,6 +19,7 @@ const setupRoutes = (context) => {
 		[`GET ${ logoutURL }`]: [enrichReq, logout],
 		[`GET ${ renewURL }`]: [enrichReq, renewAccessToken],
 		[`GET ${ session }`]: [getSession],
+		[`POST ${ registerURL }`]: [enrichReq, registerUser],
 	}};
 };
 
