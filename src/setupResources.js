@@ -16,7 +16,7 @@ const resources = {
 		},
 		repo: 'postgres',
 	},
-	userIdentity: {
+	userIdentityMap: {
 		includes: ['users', 'identity'],
 		schema: {
 			properties: {
