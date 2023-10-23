@@ -1,38 +1,20 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import { findIndex } from '@laufire/utils/collection';
 import jwt from 'jsonwebtoken';
 
-const setTokens = async (
-	req, res, next
-) => {
+const setTokens = ({ req, res, payload }) => {
 	const {
-		user: { idToken },
-		context: {
-			config: {
-				auth: { providers, renewURL, accessTokenExp, refreshTokenExp },
-				env: { JWTSECRET: secret },
-			},
-			store,
+		config: {
+			auth: { renewURL, accessTokenExp, refreshTokenExp },
+			env: { JWTSECRET: secret },
 		},
-	} = req;
-	const { sub, iss: provider } = jwt.decode(idToken);
-	const iss = findIndex(providers, ({ issuer }) => issuer === provider);
-	const role = 'prospect';
-
-	const { data: { id }} = await store({
-		...req.context, name: 'identity', action: 'create',
-		data: { payload: {
-			provider: iss,
-			providerID: sub,
-		}},
-	});
+	} = req.context;
 
 	const token = jwt.sign(
-		{ id, sub, iss, role }, secret, { expiresIn: accessTokenExp }
+		payload, secret, { expiresIn: accessTokenExp }
 	);
 	const refreshToken = jwt.sign(
-		{ id, sub, iss }, secret, { expiresIn: refreshTokenExp }
+		payload, secret, { expiresIn: refreshTokenExp }
 	);
 
 	res.cookie(
@@ -43,7 +25,6 @@ const setTokens = async (
 			httpOnly: true, secure: true, path: renewURL,
 		}
 	);
-	next();
 };
 
 export default setTokens;
