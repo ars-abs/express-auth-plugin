@@ -1,16 +1,14 @@
-import { keys } from '@laufire/utils/collection';
+import { find } from '@laufire/utils/collection';
 
-const controller = {
-	allowed: (roles, role) => roles.allowed.includes(role),
-	denied: (roles, role) => !roles.denied.includes(role),
-};
+const isAuthorized = ({ allowed, denied }, userRoles) =>
+	find(userRoles, (userRole) =>
+		allowed.includes(userRole) && !denied.includes(userRole));
 
 const includeAuthenticate = () => ({
-	authenticate: ({ session: { role }, config, name, next }) => {
+	authenticate: ({ session: { role: userRoles }, config, name, next }) => {
 		const { auth: { roles }} = config.resources[name];
-		const target = keys(roles)[0];
 
-		return controller[target](roles, role)
+		return isAuthorized(roles, userRoles)
 			? next()
 			: {
 				meta: { status: 'unauthorized' },

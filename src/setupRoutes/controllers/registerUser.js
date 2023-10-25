@@ -12,7 +12,7 @@ const registerUser = async (req, res) => {
 		...req.context, name: 'userIdentityMap', action: 'create',
 		data: { payload: { userID, identityID }},
 	});
-	const payload = { id: userID, role: 'user' };
+	const payload = { id: userID, role: ['user'] };
 
 	setTokens({ req, res, payload });
 	res.json({ data: { message: 'success' }});

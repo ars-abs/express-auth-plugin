@@ -11,7 +11,7 @@ const tokenStates = {
 
 const readSession = (req) => {
 	const { config: { env: { JWTSECRET }}} = req.context;
-	let session = { role: 'guest' };
+	let session = { role: ['guest'] };
 
 	try {
 		const { token } = req.cookies;
